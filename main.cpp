@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "FFmpegTest.h"
+#include "MediaDataTest.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
-//    testSplitYUV420p();
-    testGrayYUV420p();
+    MediaDataTest::testSplitYUV420p();
+    MediaDataTest::testGrayYUV420p();
     return 0;
 }
