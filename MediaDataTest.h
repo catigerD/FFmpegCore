@@ -14,6 +14,14 @@ public:
     static void testSplitYUV420p();
 
     static void testGrayYUV420p();
+
+    static void testHalfyYUV420p();
+
+    static void testBorderYUV420p();
+
+    static void testPsnrYUV420p();
+
+    static void testSplitRGB24();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H
