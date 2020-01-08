@@ -11,5 +11,6 @@ int main() {
     MediaDataTest::testPsnrYUV420p();
     MediaDataTest::testSplitRGB24();
     MediaDataTest::testRgb24ToBmp();
+    MediaDataTest::testRgb24ToYuv420p();
     return 0;
 }

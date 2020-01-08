@@ -40,6 +40,13 @@ public:
     //将 RGB24 格式像素数据封装为 BMP 图像
     static void rgb24ToBmp(const std::string &inUrl, unsigned int width, unsigned int height,
                            const std::string &outUrl);
+
+    static void rgb24ToYuv420p(const std::string &inUrl, unsigned int width, unsigned int height,
+                               const std::string &outUrl);
+
+private:
+
+    static unsigned char clipValue(unsigned char target, unsigned char min, unsigned char max);
 };
 
 //BMP

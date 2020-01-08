@@ -53,3 +53,9 @@ void MediaDataTest::testRgb24ToBmp() {
     std::string outUlr(OUT_PUT + "rgb2bmp.bmp");
     YUVUtil::rgb24ToBmp(inUrl, 256, 256, outUlr);
 }
+
+void MediaDataTest::testRgb24ToYuv420p() {
+    std::string inUrl(WORK_SPACE + "simplest_mediadata_test/lena_256x256_rgb24.rgb");
+    std::string outUlr(OUT_PUT + "rgb2Yuv420p.yuv");
+    YUVUtil::rgb24ToYuv420p(inUrl, 256, 256, outUlr);
+}

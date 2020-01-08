@@ -211,3 +211,49 @@ void YUVUtil::rgb24ToBmp(const std::string &inUrl, unsigned int width, unsigned 
 //    fclose(fpRgb24);
 //    fclose(fpBmp);
 }
+
+void YUVUtil::rgb24ToYuv420p(const std::string &inUrl, unsigned int width, unsigned int height,
+                             const std::string &outUrl) {
+    vector<unsigned char> rgbData;
+    rgbData.reserve(width * height * 3);
+    vector<unsigned char> yuvData(width * height * 3 / 2);
+
+    ifstream inputStream(inUrl);
+    istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
+    rgbData.insert(rgbData.begin(), inputBegin, inputEnd);
+
+    auto yItr = yuvData.begin();
+    auto uItr = yItr + width * height;
+    auto vItr = uItr + width * height / 4;
+
+    for (int i = 0; i < height; ++i) {
+        for (int j = 0; j < width; ++j) {
+            auto r = rgbData[(i * width + j) * 3];
+            auto g = rgbData[(i * width + j) * 3 + 1];
+            auto b = rgbData[(i * width + j) * 3 + 2];
+            unsigned char y = ((66 * r + 129 * g + 25 * b + 128) >> 8) + 16;
+            unsigned char u = ((-38 * r - 74 * g + 112 * b + 128) >> 8) + 128;
+            unsigned char v = ((112 * r - 94 * g - 18 * b + 128) >> 8) + 128;
+            *(yItr++) = clipValue(y, 0, 255);
+            if (i % 2 == 0 && j % 2 == 0) {
+                *(uItr++) = clipValue(u, 16, 235);
+            } else {
+                *(vItr++) = clipValue(v, 16, 239);
+            }
+        }
+    }
+
+    ofstream outputStream(outUrl);
+    ostream_iterator<unsigned char> outBegin(outputStream);
+    std::copy(yuvData.cbegin(), yuvData.cend(), outBegin);
+}
+
+unsigned char YUVUtil::clipValue(unsigned char target, unsigned char min, unsigned char max) {
+    if (target > max) {
+        return max;
+    } else if (target < min) {
+        return min;
+    } else {
+        return target;
+    }
+}
