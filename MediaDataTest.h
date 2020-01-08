@@ -22,6 +22,8 @@ public:
     static void testPsnrYUV420p();
 
     static void testSplitRGB24();
+
+    static void testRgb24ToBmp();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H

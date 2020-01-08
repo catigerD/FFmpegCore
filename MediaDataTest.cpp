@@ -47,3 +47,9 @@ void MediaDataTest::testSplitRGB24() {
     array<string, 3> outUrls{OUT_PUT + "splitRGB24R.yuv", OUT_PUT + "splitRGB24G.yuv", OUT_PUT + "splitRGB24B.yuv"};
     YUVUtil::splitRGB24(inUrl, 500, 500, outUrls);
 }
+
+void MediaDataTest::testRgb24ToBmp() {
+    std::string inUrl(WORK_SPACE + "simplest_mediadata_test/lena_256x256_rgb24.rgb");
+    std::string outUlr(OUT_PUT + "rgb2bmp.bmp");
+    YUVUtil::rgb24ToBmp(inUrl, 256, 256, outUlr);
+}
