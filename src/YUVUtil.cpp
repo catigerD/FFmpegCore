@@ -13,8 +13,8 @@
 using std::string;
 using std::ifstream;
 using std::ofstream;
-using std::istream_iterator;
 using std::ostream_iterator;
+using std::istreambuf_iterator;
 using std::vector;
 using std::array;
 using std::back_inserter;
@@ -24,8 +24,7 @@ void YUVUtil::splitYUV420p(const std::string &inUrl, unsigned int width, unsigne
     std::vector<unsigned char> yuvData;
     yuvData.reserve(width * height * 2);
     std::ifstream inputStream(inUrl);
-    std::istream_iterator<unsigned char> inputBegin(inputStream);
-    std::istream_iterator<unsigned char> inputEnd;
+    std::istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
     std::copy(inputBegin, inputEnd, back_inserter(yuvData));
     std::ofstream outputYStream(outUrls[0]);
     auto yBegin = yuvData.cbegin();
@@ -46,8 +45,7 @@ void YUVUtil::grayYUV420p(const std::string &inUrl, unsigned int width, unsigned
     std::vector<unsigned char> yuvData;
     yuvData.reserve(width * height * 2);
     std::ifstream inputStream(inUrl);
-    std::istream_iterator<unsigned char> inputBegin(inputStream);
-    std::istream_iterator<unsigned char> inputEnd;
+    std::istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
     std::copy(inputBegin, inputEnd, back_inserter(yuvData));
     for (int i = 0; i < yuvData.size(); ++i) {
         if (i > width * height) {
@@ -65,8 +63,7 @@ void YUVUtil::halfyYUV420p(const std::string &inUrl, unsigned int width, unsigne
     vector<unsigned char> yuvData;
     yuvData.reserve(width * height * 2);
     ifstream inputStream(inUrl);
-    istream_iterator<unsigned char> inputBegin(inputStream);
-    istream_iterator<unsigned char> inputEnd;
+    istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
     std::copy(inputBegin, inputEnd, back_inserter(yuvData));
     for (int i = 0; i < yuvData.size(); ++i) {
         if (i < width * height) {
@@ -83,8 +80,7 @@ void YUVUtil::borderYUV420p(const std::string &inUrl, unsigned int width, unsign
     vector<unsigned char> yuvData;
     yuvData.reserve(width * height * 2);
     ifstream inputStream(inUrl);
-    istream_iterator<unsigned char> inputBegin(inputStream);
-    istream_iterator<unsigned char> inputEnd;
+    istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
     std::copy(inputBegin, inputEnd, back_inserter(yuvData));
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
@@ -107,14 +103,12 @@ void YUVUtil::psnrYUV420p(const std::string &srcUrl, const std::string &dstUrl, 
     vector<unsigned char> srcYuvData;
     srcYuvData.reserve(width * height * 2);
     ifstream srcInputStream(srcUrl);
-    istream_iterator<unsigned char> srcInputBegin(srcInputStream);
-    istream_iterator<unsigned char> srcInputEnd;
+    istreambuf_iterator<char> srcInputBegin(srcInputStream), srcInputEnd;
     std::copy(srcInputBegin, srcInputEnd, back_inserter(srcYuvData));
     vector<unsigned char> dstYuvData;
     dstYuvData.reserve(width * height * 2);
     ifstream destInputStream(dstUrl);
-    istream_iterator<unsigned char> dstInputBegin(destInputStream);
-    istream_iterator<unsigned char> dstInputEnd;
+    istreambuf_iterator<char> dstInputBegin(destInputStream), dstInputEnd;
     std::copy(dstInputBegin, dstInputEnd, back_inserter(dstYuvData));
 
     double mseSum = 0.0;
@@ -129,8 +123,7 @@ void YUVUtil::psnrYUV420p(const std::string &srcUrl, const std::string &dstUrl, 
 void YUVUtil::splitRGB24(const std::string &inUrl, unsigned int width, unsigned int height,
                          const std::array<std::string, 3> &outUrls) {
     ifstream inputStream(inUrl);
-    istream_iterator<unsigned char> inputBegin(inputStream);
-    istream_iterator<unsigned char> inputEnd;
+    istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
     vector<unsigned char> rgbData(inputBegin, inputEnd);
 
     vector<unsigned char> rData;
@@ -161,10 +154,9 @@ void YUVUtil::splitRGB24(const std::string &inUrl, unsigned int width, unsigned 
 //ifstream 读取 rgb size 变小？原始 256x256x3 = 196608, 文件读取后 195617。yuv 数据无问题
 void YUVUtil::rgb24ToBmp(const std::string &inUrl, unsigned int width, unsigned int height,
                          const std::string &outUrl) {
-//    ifstream inputStream(inUrl, std::ios::binary);
-//    istream_iterator<unsigned char> inputBegin(inputStream);
-//    istream_iterator<unsigned char> inputEnd;
-//    vector<unsigned char> rgbData(inputBegin, inputEnd);
+    ifstream inputStream(inUrl, std::ios::binary);
+    istreambuf_iterator<char> inputBegin(inputStream), inputEnd;
+    vector<unsigned char> rgbData(inputBegin, inputEnd);
 
     BitmapFileHeader bmpHead;
     ///* Magic number for file. It does not fit in the header structure due to alignment requirements, so put it outside */
@@ -181,41 +173,41 @@ void YUVUtil::rgb24ToBmp(const std::string &inUrl, unsigned int width, unsigned 
     infoHead.biBitcount = 24;
     infoHead.biSizeImage = 3 * width * height;
 
-//    ofstream outputStream(outUrl);
-//    outputStream.write(reinterpret_cast<const char *>(&bfType), sizeof(bfType));
-//    outputStream.write(reinterpret_cast<const char *>(&bmpHead), sizeof(BitmapFileHeader));
-//    outputStream.write(reinterpret_cast<const char *>(&infoHead), sizeof(BitmapInfoHeader));
+    ofstream outputStream(outUrl);
+    outputStream.write(reinterpret_cast<const char *>(&bfType), sizeof(bfType));
+    outputStream.write(reinterpret_cast<const char *>(&bmpHead), sizeof(BitmapFileHeader));
+    outputStream.write(reinterpret_cast<const char *>(&infoHead), sizeof(BitmapInfoHeader));
     //BMP save R1|G1|B1,R2|G2|B2 as B1|G1|R1,B2|G2|R2
     //It saves pixel data in Little Endian
     //So we change 'R' and 'B'
-//    for (int i = 0; i < height; ++i) {
-//        for (int j = 0; j < width; ++j) {
-//            auto temp = rgbData[(i * width + j) * 3];
-//            rgbData[(i * width + j) * 3] = rgbData[(i * width + j) * 3 + 2];
-//            rgbData[(i * width + j) * 3 + 2] = temp;
-//        }
-//    }
-//    ostream_iterator<unsigned char> outBegin(outputStream);
-//    std::copy(rgbData.cbegin(), rgbData.cend(), outBegin);
-
-    FILE *fpRgb24 = nullptr, *fpBmp = nullptr;
-    fpRgb24 = fopen(inUrl.c_str(), "rb");
-    fpBmp = fopen(outUrl.c_str(), "wb");
-    unsigned char rgb24Buffer[width * height * 3];
-    fread(rgb24Buffer, 1, width * height * 3, fpRgb24);
     for (int i = 0; i < height; ++i) {
         for (int j = 0; j < width; ++j) {
-            auto temp = rgb24Buffer[(i * width + j) * 3];
-            rgb24Buffer[(i * width + j) * 3] = rgb24Buffer[(i * width + j) * 3 + 2];
-            rgb24Buffer[(i * width + j) * 3 + 2] = temp;
+            auto temp = rgbData[(i * width + j) * 3];
+            rgbData[(i * width + j) * 3] = rgbData[(i * width + j) * 3 + 2];
+            rgbData[(i * width + j) * 3 + 2] = temp;
         }
     }
+    ostream_iterator<char> outBegin(outputStream);
+    std::copy(rgbData.cbegin(), rgbData.cend(), outBegin);
 
-    fwrite(&bfType, 1, sizeof(bfType), fpBmp);
-    fwrite(&bmpHead, 1, sizeof(BitmapFileHeader), fpBmp);
-    fwrite(&infoHead, 1, sizeof(BitmapInfoHeader), fpBmp);
-    fwrite(rgb24Buffer, width * height * 3, 1, fpBmp);
-
-    fclose(fpRgb24);
-    fclose(fpBmp);
+//    FILE *fpRgb24 = nullptr, *fpBmp = nullptr;
+//    fpRgb24 = fopen(inUrl.c_str(), "rb");
+//    fpBmp = fopen(outUrl.c_str(), "wb");
+//    unsigned char rgb24Buffer[width * height * 3];
+//    fread(rgb24Buffer, 1, width * height * 3, fpRgb24);
+//    for (int i = 0; i < height; ++i) {
+//        for (int j = 0; j < width; ++j) {
+//            auto temp = rgb24Buffer[(i * width + j) * 3];
+//            rgb24Buffer[(i * width + j) * 3] = rgb24Buffer[(i * width + j) * 3 + 2];
+//            rgb24Buffer[(i * width + j) * 3 + 2] = temp;
+//        }
+//    }
+//
+//    fwrite(&bfType, 1, sizeof(bfType), fpBmp);
+//    fwrite(&bmpHead, 1, sizeof(BitmapFileHeader), fpBmp);
+//    fwrite(&infoHead, 1, sizeof(BitmapInfoHeader), fpBmp);
+//    fwrite(rgb24Buffer, width * height * 3, 1, fpBmp);
+//
+//    fclose(fpRgb24);
+//    fclose(fpBmp);
 }
