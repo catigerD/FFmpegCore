@@ -41,6 +41,7 @@ public:
     static void rgb24ToBmp(const std::string &inUrl, unsigned int width, unsigned int height,
                            const std::string &outUrl);
 
+    //将 RGB24 格式像素数据转换成 Yuv420p 像素数据
     static void rgb24ToYuv420p(const std::string &inUrl, unsigned int width, unsigned int height,
                                const std::string &outUrl);
 

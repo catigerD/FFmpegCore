@@ -26,6 +26,16 @@ public:
     static void testRgb24ToBmp();
 
     static void testRgb24ToYuv420p();
+
+    static void testSplitPcm16LE();
+
+    static void testHalfVolumeLToPcm16LE();
+
+    static void testDoubleSpeedPcm16LE();
+
+    static void testPcm16LE2Pcm8();
+
+    static void testCutSingleChannelPcm16LE();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H

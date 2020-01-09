@@ -3,7 +3,9 @@
 //
 
 #include "MediaDataTest.h"
+
 #include "YUVUtil.h"
+#include "PcmUtil.h"
 
 using std::string;
 using std::array;
@@ -58,4 +60,34 @@ void MediaDataTest::testRgb24ToYuv420p() {
     std::string inUrl(WORK_SPACE + "simplest_mediadata_test/lena_256x256_rgb24.rgb");
     std::string outUlr(OUT_PUT + "rgb2Yuv420p.yuv");
     YUVUtil::rgb24ToYuv420p(inUrl, 256, 256, outUlr);
+}
+
+void MediaDataTest::testSplitPcm16LE() {
+    std::string inUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    array<string, 2> outUrls{OUT_PUT + "splitPcm16LE_L.pcm", OUT_PUT + "splitPcm16LE_R.pcm"};
+    PcmUtil::splitPcm16LE(inUrl, outUrls);
+}
+
+void MediaDataTest::testHalfVolumeLToPcm16LE() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    std::string dstUrl(OUT_PUT + "halfVolumeLPcm16LE.pcm");
+    PcmUtil::halfVolumeLToPcm16LE(srcUrl, dstUrl);
+}
+
+void MediaDataTest::testDoubleSpeedPcm16LE() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    std::string dstUrl(OUT_PUT + "doubleSpeedPcm16LE.pcm");
+    PcmUtil::doubleSpeedPcm16LE(srcUrl, dstUrl);
+}
+
+void MediaDataTest::testPcm16LE2Pcm8() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    std::string dstUrl(OUT_PUT + "pcm16LE2Pcm8.pcm");
+    PcmUtil::doubleSpeedPcm16LE(srcUrl, dstUrl);
+}
+
+void MediaDataTest::testCutSingleChannelPcm16LE() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/drum.pcm");
+    std::string dstUrl(OUT_PUT + "cutSingleChannelPcm16LE.pcm");
+    PcmUtil::cutSingleChannelPcm16LE(srcUrl, 2360, 120, dstUrl);
 }
