@@ -34,24 +34,24 @@ public:
 
 struct WAVE_HEADER {
     char fccID[4]{'R', 'I', 'F', 'F'};
-    unsigned long dwSize;
+    unsigned int dwSize;
     char fccType[4]{'W', 'A', 'V', 'E'};
 };
 
 struct WAVE_FMT {
-    char fccID[4]{"fmt"};
-    unsigned long dwSize{16};
+    char fccID[4]{'f', 'm', 't', ' '};
+    unsigned int dwSize{16};
     unsigned short wFormatTag{1};
     unsigned short wChannels;
-    unsigned long dwSamplesPerSec;
-    unsigned long dwAvgBytesPerSec;
+    unsigned int dwSamplesPerSec;
+    unsigned int dwAvgBytesPerSec;
     unsigned short wBlockAlign{2};
     unsigned short uiBitsPerSample{16};
 };
 
 struct WAVE_DATA {
     char fccID[4]{'d', 'a', 't', 'a'};
-    unsigned long dwSize;
+    unsigned int dwSize;
 };
 
 

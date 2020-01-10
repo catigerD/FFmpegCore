@@ -103,7 +103,7 @@ void PcmUtil::pcm16LE2Wave(const std::string &inUrl, int channels, int sampleRat
     outputStream.write(reinterpret_cast<const char *>(&waveData), sizeof(WAVE_DATA));
     ostream_iterator<char> outputBegin(outputStream);
     std::copy(pcmData->cbegin(), pcmData->cend(), outputBegin);
-    waveHeader.dwSize = 44 + waveData.dwSize;
+    waveHeader.dwSize = sizeof(waveHeader) + sizeof(waveFmt) + sizeof(waveData) + waveData.dwSize;
     outputStream.seekp(0, ios::beg);
     outputStream.write(reinterpret_cast<const char *>(&waveHeader), sizeof(WAVE_HEADER));
 }
