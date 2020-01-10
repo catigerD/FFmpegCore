@@ -82,3 +82,28 @@ void PcmUtil::cutSingleChannelPcm16LE(const std::string &inUrl, unsigned int sta
 
     FileUtil::writeByteVector(outUrl, dstData);
 }
+
+void PcmUtil::pcm16LE2Wave(const std::string &inUrl, int channels, int sampleRate, const std::string &outUrl) {
+    auto pcmData = FileUtil::getByteVector(inUrl);
+
+    ofstream outputStream(outUrl);
+    WAVE_HEADER waveHeader;
+    outputStream.seekp(sizeof(WAVE_HEADER), ios::beg);
+    WAVE_FMT waveFmt;
+    if (channels == 0 || sampleRate == 0) {
+        channels = 2;
+        sampleRate = 44100;
+    }
+    waveFmt.dwSamplesPerSec = sampleRate;
+    waveFmt.dwAvgBytesPerSec = waveFmt.dwSamplesPerSec * 2;
+    waveFmt.wChannels = channels;
+    outputStream.write(reinterpret_cast<const char *>(&waveFmt), sizeof(WAVE_FMT));
+    WAVE_DATA waveData;
+    waveData.dwSize = pcmData->size();
+    outputStream.write(reinterpret_cast<const char *>(&waveData), sizeof(WAVE_DATA));
+    ostream_iterator<char> outputBegin(outputStream);
+    std::copy(pcmData->cbegin(), pcmData->cend(), outputBegin);
+    waveHeader.dwSize = 44 + waveData.dwSize;
+    outputStream.seekp(0, ios::beg);
+    outputStream.write(reinterpret_cast<const char *>(&waveHeader), sizeof(WAVE_HEADER));
+}

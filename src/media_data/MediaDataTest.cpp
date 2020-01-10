@@ -91,3 +91,9 @@ void MediaDataTest::testCutSingleChannelPcm16LE() {
     std::string dstUrl(OUT_PUT + "cutSingleChannelPcm16LE.pcm");
     PcmUtil::cutSingleChannelPcm16LE(srcUrl, 2360, 120, dstUrl);
 }
+
+void MediaDataTest::testPcm16LE2Wave() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    std::string dstUrl(OUT_PUT + "pcm16LE2Wave.wav");
+    PcmUtil::pcm16LE2Wave(srcUrl, 2, 44100, dstUrl);
+}

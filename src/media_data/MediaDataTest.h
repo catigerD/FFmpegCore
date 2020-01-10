@@ -36,6 +36,8 @@ public:
     static void testPcm16LE2Pcm8();
 
     static void testCutSingleChannelPcm16LE();
+
+    static void testPcm16LE2Wave();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H

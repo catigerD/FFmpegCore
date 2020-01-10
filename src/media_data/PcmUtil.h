@@ -24,8 +24,34 @@ public:
     static void pcm16LE2Pcm8(const std::string &inUrl, const std::string &outUrl);
 
     //从 PCM16LE 单声道音频采样数据中截取一部分数据
-    static void cutSingleChannelPcm16LE(const std::string &inUrl, unsigned int start, unsigned int dur,const std::string &outUrl);
+    static void
+    cutSingleChannelPcm16LE(const std::string &inUrl, unsigned int start, unsigned int dur, const std::string &outUrl);
 
+    //将 PCM16LE 双声道音频采样数据转换为 WAVE格式音频数据
+    static void pcm16LE2Wave(const std::string &inUrl, int channels, int sampleRate, const std::string &outUrl);
+
+};
+
+struct WAVE_HEADER {
+    char fccID[4]{'R', 'I', 'F', 'F'};
+    unsigned long dwSize;
+    char fccType[4]{'W', 'A', 'V', 'E'};
+};
+
+struct WAVE_FMT {
+    char fccID[4]{"fmt"};
+    unsigned long dwSize{16};
+    unsigned short wFormatTag{1};
+    unsigned short wChannels;
+    unsigned long dwSamplesPerSec;
+    unsigned long dwAvgBytesPerSec;
+    unsigned short wBlockAlign{2};
+    unsigned short uiBitsPerSample{16};
+};
+
+struct WAVE_DATA {
+    char fccID[4]{'d', 'a', 't', 'a'};
+    unsigned long dwSize;
 };
 
 

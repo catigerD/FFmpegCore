@@ -17,6 +17,7 @@ int main() {
 //    MediaDataTest::testHalfVolumeLToPcm16LE();
 //    MediaDataTest::testDoubleSpeedPcm16LE();
 //    MediaDataTest::testPcm16LE2Pcm8();
-    MediaDataTest::testCutSingleChannelPcm16LE();
+//    MediaDataTest::testCutSingleChannelPcm16LE();
+    MediaDataTest::testPcm16LE2Wave();
     return 0;
 }
