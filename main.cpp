@@ -18,6 +18,8 @@ int main() {
 //    MediaDataTest::testDoubleSpeedPcm16LE();
 //    MediaDataTest::testPcm16LE2Pcm8();
 //    MediaDataTest::testCutSingleChannelPcm16LE();
-    MediaDataTest::testPcm16LE2Wave();
+//    MediaDataTest::testPcm16LE2Wave();
+
+    MediaDataTest::testParseH264();
     return 0;
 }

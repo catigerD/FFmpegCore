@@ -6,6 +6,7 @@
 
 #include "YUVUtil.h"
 #include "PcmUtil.h"
+#include "H264Util.h"
 
 using std::string;
 using std::array;
@@ -96,4 +97,9 @@ void MediaDataTest::testPcm16LE2Wave() {
     std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
     std::string dstUrl(OUT_PUT + "pcm16LE2Wave.wav");
     PcmUtil::pcm16LE2Wave(srcUrl, 2, 44100, dstUrl);
+}
+
+void MediaDataTest::testParseH264() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/sintel.h264");
+    H264Util::parseH264(srcUrl);
 }

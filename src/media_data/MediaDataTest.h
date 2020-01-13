@@ -38,6 +38,8 @@ public:
     static void testCutSingleChannelPcm16LE();
 
     static void testPcm16LE2Wave();
+
+    static void testParseH264();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H
