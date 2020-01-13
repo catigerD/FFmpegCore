@@ -40,6 +40,8 @@ public:
     static void testPcm16LE2Wave();
 
     static void testParseH264();
+
+    static void testParserAAC();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H

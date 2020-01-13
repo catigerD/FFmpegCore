@@ -20,6 +20,8 @@ int main() {
 //    MediaDataTest::testCutSingleChannelPcm16LE();
 //    MediaDataTest::testPcm16LE2Wave();
 
-    MediaDataTest::testParseH264();
+//    MediaDataTest::testParseH264();
+
+    MediaDataTest::testParserAAC();
     return 0;
 }
