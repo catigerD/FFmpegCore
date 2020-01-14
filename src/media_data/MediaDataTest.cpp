@@ -8,6 +8,7 @@
 #include "PcmUtil.h"
 #include "H264Util.h"
 #include "AACUtil.h"
+#include "FLVUtil.h"
 
 using std::string;
 using std::array;
@@ -108,4 +109,9 @@ void MediaDataTest::testParseH264() {
 void MediaDataTest::testParserAAC() {
     std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/nocturne.aac");
     AACUtil::parserAAC(srcUrl);
+}
+
+void MediaDataTest::testParserFLV() {
+    std::string srcUrl(WORK_SPACE + "simplest_mediadata_test/cuc_ieschool.flv");
+    FLVUtil::parserFLV(srcUrl);
 }

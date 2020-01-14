@@ -22,6 +22,8 @@ int main() {
 
 //    MediaDataTest::testParseH264();
 
-    MediaDataTest::testParserAAC();
+//    MediaDataTest::testParserAAC();
+
+    MediaDataTest::testParserFLV();
     return 0;
 }

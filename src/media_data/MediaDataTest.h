@@ -42,6 +42,8 @@ public:
     static void testParseH264();
 
     static void testParserAAC();
+
+    static void testParserFLV();
 };
 
 #endif //FFMPEGCORE_MEDIADATATEST_H
