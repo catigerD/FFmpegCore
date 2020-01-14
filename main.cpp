@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "MediaDataTest.h"
+#include "FFmpegTest.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -24,6 +25,8 @@ int main() {
 
 //    MediaDataTest::testParserAAC();
 
-    MediaDataTest::testParserFLV();
+//    MediaDataTest::testParserFLV();
+
+    FFmpegTest::test();
     return 0;
 }
