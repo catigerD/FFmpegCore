@@ -21,6 +21,7 @@ public:
 private:
     AVFormatContext *fmtCtx{};
     AVIOContext *ioCtx{};
+    //文件 mmap 到buffer
     uint8_t *buffer{};
     size_t bufferSize{};
     int ret{};

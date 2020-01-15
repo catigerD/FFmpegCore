@@ -12,6 +12,8 @@ extern "C" {
 class FFmpegTest {
 public:
     static void testAVIOReading();
+
+    static void testDecodeAudio();
 };
 
 
