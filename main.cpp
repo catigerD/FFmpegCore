@@ -29,6 +29,8 @@ int main() {
 
 //    FFmpegTest::testAVIOReading();
 
-    FFmpegTest::testDecodeAudio();
+//    FFmpegTest::testDecodeAudio();
+
+    FFmpegTest::testDecodeVideo();
     return 0;
 }

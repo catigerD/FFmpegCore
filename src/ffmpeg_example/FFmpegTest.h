@@ -14,6 +14,8 @@ public:
     static void testAVIOReading();
 
     static void testDecodeAudio();
+
+    static void testDecodeVideo();
 };
 
 

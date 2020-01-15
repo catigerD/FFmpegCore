@@ -8,6 +8,7 @@
 
 #include "AVIOReading.h"
 #include "DecodeAudio.h"
+#include "DecodeVideo.h"
 
 using namespace std;
 
@@ -25,4 +26,11 @@ void FFmpegTest::testDecodeAudio() {
     string outUrl(OUT_PUT + "decodeAudio.pcm");
     DecodeAudio decodeAudio;
     decodeAudio(inUrl, outUrl);
+}
+
+void FFmpegTest::testDecodeVideo() {
+    string inUrl(WORK_SPACE + "simplest_mediadata_test/sintel.h264");
+    string outUrl(OUT_PUT + "decodeVideo/picture");
+    DecodeVideo decodeVideo;
+    decodeVideo(inUrl, outUrl);
 }
