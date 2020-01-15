@@ -11,9 +11,7 @@ extern "C" {
 
 class FFmpegTest {
 public:
-    static void test() {
-        avformat_alloc_context();
-    };
+    static void testAVIOReading();
 };
 
 

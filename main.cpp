@@ -27,6 +27,6 @@ int main() {
 
 //    MediaDataTest::testParserFLV();
 
-    FFmpegTest::test();
+    FFmpegTest::testAVIOReading();
     return 0;
 }
