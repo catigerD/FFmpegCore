@@ -9,6 +9,7 @@
 #include "AVIOReading.h"
 #include "DecodeAudio.h"
 #include "DecodeVideo.h"
+#include "DemuxingDecoding.h"
 
 using namespace std;
 
@@ -33,4 +34,12 @@ void FFmpegTest::testDecodeVideo() {
     string outUrl(OUT_PUT + "decodeVideo/picture");
     DecodeVideo decodeVideo;
     decodeVideo(inUrl, outUrl);
+}
+
+void FFmpegTest::testDemuxingDecoding() {
+    string inUrl(WORK_SPACE + "simplest_mediadata_test/cuc_ieschool.flv");
+    string outVideoUrl(OUT_PUT + "demuxingDecodingVideo.yuv");
+    string outAudioUrl(OUT_PUT + "demuxingDecodingAudio.pcm");
+    DemuxingDecoding demuxingDecoding(inUrl, outVideoUrl, outAudioUrl);
+    demuxingDecoding();
 }
