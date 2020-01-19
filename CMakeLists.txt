@@ -8,25 +8,29 @@ set(SRC ${WORK_SPACE}/src)
 set(MEDIA_DATA ${SRC}/media_data)
 set(UTILS ${SRC}/utils)
 set(FFMPEG_EXAMPLE ${SRC}/ffmpeg_example)
+set(FFMPEG_EXERCISE ${SRC}/ffmpeg_exercise)
 
 include_directories(${WORK_SPACE})
 include_directories(${SRC})
 include_directories(${MEDIA_DATA})
 include_directories(${UTILS})
 include_directories(${FFMPEG_EXAMPLE})
+include_directories(${FFMPEG_EXERCISE})
 
 file(GLOB FILES_WORK_SPACE ${WORK_SPACE}/*.cpp)
 file(GLOB FILES_SRC ${SRC}/*.cpp)
 file(GLOB FILES_MEIDA_DATA ${MEDIA_DATA}/*.cpp)
 file(GLOB FILES_UTILS ${UTILS}/*.cpp)
 file(GLOB FILES_FFMPEG_EXAMPLE ${FFMPEG_EXAMPLE}/*.cpp)
+file(GLOB FILES_FFMPEG_EXERCISE ${FFMPEG_EXERCISE}/*.cpp)
 
 add_executable(FFmpegCore
         ${FILES_WORK_SPACE}
         ${FILES_SRC}
         ${FILES_MEIDA_DATA}
         ${FILES_UTILS}
-        ${FILES_FFMPEG_EXAMPLE})
+        ${FILES_FFMPEG_EXAMPLE}
+        ${FILES_FFMPEG_EXERCISE})
 
 #MAC下开发FFMPEG的cmake: https://blog.csdn.net/zzcchunter/article/details/60959963
 INCLUDE_DIRECTORIES(/usr/local/Cellar/ffmpeg/4.1.3/include)
