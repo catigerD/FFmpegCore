@@ -2,8 +2,8 @@
 // Created by dengchong on 2020-01-20.
 //
 
-#ifndef FFMPEGCORE_FFMPEGEXERCISE_H
-#define FFMPEGCORE_FFMPEGEXERCISE_H
+#ifndef FFMPEGCORE_FFMPEGDEXMUXDECODEEXERCISE_H
+#define FFMPEGCORE_FFMPEGDEXMUXDECODEEXERCISE_H
 
 extern "C" {
 #include "libavformat/avformat.h"
@@ -14,9 +14,9 @@ extern "C" {
 #include <fstream>
 #include <functional>
 
-class FFmpegExercise {
+class FFmpegDexmuxDecodeExercise {
 public:
-    FFmpegExercise(const std::string &url, const std::string &videoUrl, const std::string &audioUrl)
+    FFmpegDexmuxDecodeExercise(const std::string &url, const std::string &videoUrl, const std::string &audioUrl)
             : inputUrl(url),
               outVideoUrl(videoUrl),
               outAudioUrl(audioUrl),
@@ -25,7 +25,7 @@ public:
         init();
     }
 
-    ~FFmpegExercise();
+    ~FFmpegDexmuxDecodeExercise();
 
     void demuxingDecode();
 
@@ -60,4 +60,4 @@ void decode(std::ofstream &outputStream, AVCodecContext *codecCtx, AVPacket *pac
             const std::function<void(std::ofstream &outputStream, const AVCodecContext *, const AVFrame *)> &writeFun);
 
 
-#endif //FFMPEGCORE_FFMPEGEXERCISE_H
+#endif //FFMPEGCORE_FFMPEGDEXMUXDECODEEXERCISE_H

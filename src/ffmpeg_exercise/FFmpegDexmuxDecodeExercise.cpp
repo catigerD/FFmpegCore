@@ -2,13 +2,17 @@
 // Created by dengchong on 2020-01-20.
 //
 
-#include "FFmpegExercise.h"
+#include "FFmpegDexmuxDecodeExercise.h"
+
+extern "C" {
+#include "libavutil/imgutils.h"
+}
 
 #include <iostream>
 
 using namespace std;
 
-FFmpegExercise::~FFmpegExercise() {
+FFmpegDexmuxDecodeExercise::~FFmpegDexmuxDecodeExercise() {
     av_frame_free(&frame);
     av_packet_free(&packet);
     avcodec_free_context(&aCodecCtx);
@@ -17,17 +21,24 @@ FFmpegExercise::~FFmpegExercise() {
 }
 
 
-void FFmpegExercise::demuxingDecode() {
+void FFmpegDexmuxDecodeExercise::demuxingDecode() {
     while (av_read_frame(fmtCtx, packet) >= 0) {
         if (packet->stream_index == vStreamIdx) {
-            ::decode(videoOutputStream, vCodecCtx, packet, frame, &FFmpegExercise::writeVideo);
+            ::decode(videoOutputStream, vCodecCtx, packet, frame, &FFmpegDexmuxDecodeExercise::writeVideo);
         } else if (packet->stream_index == aStreamIdx) {
-            ::decode(audioOutputStream, aCodecCtx, packet, frame, &FFmpegExercise::writeAudio);
+            ::decode(audioOutputStream, aCodecCtx, packet, frame, &FFmpegDexmuxDecodeExercise::writeAudio);
         }
+        av_packet_unref(packet);
+    }
+    //flush the decoder
+    if (packet->stream_index == vStreamIdx) {
+        ::decode(videoOutputStream, vCodecCtx, nullptr, frame, &FFmpegDexmuxDecodeExercise::writeVideo);
+    } else if (packet->stream_index == aStreamIdx) {
+        ::decode(audioOutputStream, aCodecCtx, nullptr, frame, &FFmpegDexmuxDecodeExercise::writeAudio);
     }
 }
 
-void FFmpegExercise::init() {
+void FFmpegDexmuxDecodeExercise::init() {
     ret = avformat_open_input(&fmtCtx, inputUrl.c_str(), nullptr, nullptr);
     if (ret < 0) {
         cerr << "avformat_open_input fail ... error : " << av_err2str(ret) << endl;
@@ -57,25 +68,39 @@ void FFmpegExercise::init() {
 }
 
 void
-FFmpegExercise::writeVideo(std::ofstream &outputStream, const AVCodecContext *codecContext, const AVFrame *avFrame) {
-    for (int i = 0; i < codecContext->height; ++i) {
-        outputStream.write(reinterpret_cast<const char *>(avFrame->data[0] + i * avFrame->linesize[0]),
-                           codecContext->width);
-    }
-    /* save U(Cb) data */
-    for (int i = 0; i < codecContext->height / 2; ++i) {
-        outputStream.write(reinterpret_cast<const char *>(avFrame->data[1] + i * avFrame->linesize[1]),
-                           codecContext->width / 2);
-    }
-    /* save V(Cr) data */
-    for (int i = 0; i < codecContext->height / 2; ++i) {
-        outputStream.write(reinterpret_cast<const char *>(avFrame->data[2] + i * avFrame->linesize[2]),
-                           codecContext->width / 2);
-    }
+FFmpegDexmuxDecodeExercise::writeVideo(std::ofstream &outputStream, const AVCodecContext *codecContext,
+                                       const AVFrame *avFrame) {
+    //1. 遍历读取
+//    for (int i = 0; i < codecContext->height; ++i) {
+//        outputStream.write(reinterpret_cast<const char *>(avFrame->data[0] + i * avFrame->linesize[0]),
+//                           codecContext->width);
+//    }
+//    /* save U(Cb) data */
+//    for (int i = 0; i < codecContext->height / 2; ++i) {
+//        outputStream.write(reinterpret_cast<const char *>(avFrame->data[1] + i * avFrame->linesize[1]),
+//                           codecContext->width / 2);
+//    }
+//    /* save V(Cr) data */
+//    for (int i = 0; i < codecContext->height / 2; ++i) {
+//        outputStream.write(reinterpret_cast<const char *>(avFrame->data[2] + i * avFrame->linesize[2]),
+//                           codecContext->width / 2);
+//    }
+    //2. 使用 av_image_xxx
+    uint8_t *dstData[4]{};
+    int dstLinesize[4];
+    //aligin == 1, linesize == dataSize
+    int dstDataSize = av_image_alloc(dstData, dstLinesize, codecContext->width, codecContext->height,
+                                     codecContext->pix_fmt, 1);
+    av_image_copy(dstData, dstLinesize, (const uint8_t **) (avFrame->data), avFrame->linesize,
+                  static_cast<AVPixelFormat>(avFrame->format), avFrame->width,
+                  avFrame->height);
+    outputStream.write(reinterpret_cast<const char *>(dstData[0]), dstDataSize);
+    av_freep(&dstData[0]);
 }
 
 void
-FFmpegExercise::writeAudio(std::ofstream &outputStream, const AVCodecContext *codecContext, const AVFrame *avFrame) {
+FFmpegDexmuxDecodeExercise::writeAudio(std::ofstream &outputStream, const AVCodecContext *codecContext,
+                                       const AVFrame *avFrame) {
     int planar = av_sample_fmt_is_planar(codecContext->sample_fmt);
     int bytes = av_get_bytes_per_sample(codecContext->sample_fmt);
     if (planar) {

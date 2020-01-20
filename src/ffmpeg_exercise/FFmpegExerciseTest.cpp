@@ -6,7 +6,7 @@
 
 #include <string>
 
-#include "FFmpegExercise.h"
+#include "FFmpegDexmuxDecodeExercise.h"
 
 using namespace std;
 
@@ -17,6 +17,6 @@ void FFmpegExerciseTest::testDemuxingDecode() {
     string inUrl(WORK_SPACE + "simplest_mediadata_test/cuc_ieschool.flv");
     string outVideoUrl(OUT_PUT + "exercise-demuxingDecodingVideo.yuv");
     string outAudioUrl(OUT_PUT + "exercise-demuxingDecodingAudio.pcm");
-    FFmpegExercise exercise(inUrl, outVideoUrl, outAudioUrl);
+    FFmpegDexmuxDecodeExercise exercise(inUrl, outVideoUrl, outAudioUrl);
     exercise.demuxingDecode();
 }
