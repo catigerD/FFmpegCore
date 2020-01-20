@@ -2,6 +2,7 @@
 
 #include "MediaDataTest.h"
 #include "FFmpegTest.h"
+#include "FFmpegExerciseTest.h"
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -33,6 +34,7 @@ int main() {
 
 //    FFmpegTest::testDecodeVideo();
 
-    FFmpegTest::testDemuxingDecoding();
+//    FFmpegTest::testDemuxingDecoding();
+    FFmpegExerciseTest::testDemuxingDecode();
     return 0;
 }
