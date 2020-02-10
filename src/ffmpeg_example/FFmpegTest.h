@@ -18,6 +18,8 @@ public:
     static void testDecodeVideo();
 
     static void testDemuxingDecoding();
+
+    static void testEncodeAudio();
 };
 
 

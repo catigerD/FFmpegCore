@@ -10,6 +10,7 @@
 #include "DecodeAudio.h"
 #include "DecodeVideo.h"
 #include "DemuxingDecoding.h"
+#include "EncodeAudio.h"
 
 using namespace std;
 
@@ -42,4 +43,11 @@ void FFmpegTest::testDemuxingDecoding() {
     string outAudioUrl(OUT_PUT + "demuxingDecodingAudio.pcm");
     DemuxingDecoding demuxingDecoding(inUrl, outVideoUrl, outAudioUrl);
     demuxingDecoding();
+}
+
+void FFmpegTest::testEncodeAudio() {
+    string inUrl(WORK_SPACE + "simplest_mediadata_test/NocturneNo2inEflat_44.1k_s16le.pcm");
+    string outUrl(OUT_PUT + "encodeAudio.mp2");
+    EncodeAudio encodeAudio(inUrl, outUrl);
+    encodeAudio();
 }
