@@ -38,6 +38,8 @@ int main() {
 
 //    FFmpegExerciseTest::testDemuxingDecode();
 
-    FFmpegTest::testEncodeAudio();
+//    FFmpegTest::testEncodeAudio();
+
+    FFmpegTest::testEncodeVideo();
     return 0;
 }

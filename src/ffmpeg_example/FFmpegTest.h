@@ -20,6 +20,8 @@ public:
     static void testDemuxingDecoding();
 
     static void testEncodeAudio();
+
+    static void testEncodeVideo();
 };
 
 

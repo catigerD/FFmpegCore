@@ -11,6 +11,7 @@
 #include "DecodeVideo.h"
 #include "DemuxingDecoding.h"
 #include "EncodeAudio.h"
+#include "EncodeVideo.h"
 
 using namespace std;
 
@@ -50,4 +51,11 @@ void FFmpegTest::testEncodeAudio() {
     string outUrl(OUT_PUT + "encodeAudio.mp2");
     EncodeAudio encodeAudio(inUrl, outUrl);
     encodeAudio();
+}
+
+void FFmpegTest::testEncodeVideo() {
+    string inUrl(WORK_SPACE + "simplest_mediadata_test/sintel_480x272_yuv420p.yuv");
+    string outUrl(OUT_PUT + "encodeVideo.h264");
+    EncodeVideo encodeVideo(inUrl, outUrl);
+    encodeVideo();
 }
