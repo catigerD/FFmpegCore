@@ -12,6 +12,7 @@
 #include "DemuxingDecoding.h"
 #include "EncodeAudio.h"
 #include "EncodeVideo.h"
+#include "MetaData.h"
 
 using namespace std;
 
@@ -58,4 +59,10 @@ void FFmpegTest::testEncodeVideo() {
     string outUrl(OUT_PUT + "encodeVideo.h264");
     EncodeVideo encodeVideo(inUrl, outUrl);
     encodeVideo();
+}
+
+void FFmpegTest::testMetaData() {
+    string filePath(WORK_SPACE + "simplest_mediadata_test/nocturne.aac");
+    MetaData metaData(filePath);
+    metaData();
 }

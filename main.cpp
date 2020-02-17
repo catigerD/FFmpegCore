@@ -40,6 +40,8 @@ int main() {
 
 //    FFmpegTest::testEncodeAudio();
 
-    FFmpegTest::testEncodeVideo();
+//    FFmpegTest::testEncodeVideo();
+
+    FFmpegTest::testMetaData();
     return 0;
 }

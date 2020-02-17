@@ -22,6 +22,8 @@ public:
     static void testEncodeAudio();
 
     static void testEncodeVideo();
+
+    static void testMetaData();
 };
 
 
