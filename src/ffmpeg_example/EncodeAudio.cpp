@@ -6,8 +6,7 @@
 
 #include <iostream>
 
-#include "ValidUtil.h"
-#include "CodecUtil.h"
+#include "FFmpegUtil.h"
 
 using namespace std;
 
@@ -23,10 +22,10 @@ void EncodeAudio::operator()() {
         if (inputStream.eof()) {
             cerr << "inputStream eof ... " << endl;
             /* flush the encoder */
-            CodecUtil::encode(codecCtx, nullptr, packet, outputStream);
+            FFmpegUtil::encode(codecCtx, nullptr, packet, outputStream);
             return;
         }
-        CodecUtil::encode(codecCtx, frame, packet, outputStream);
+        FFmpegUtil::encode(codecCtx, frame, packet, outputStream);
     }
 }
 
@@ -47,7 +46,7 @@ void EncodeAudio::init() {
 
     codecCtx->sample_fmt = AV_SAMPLE_FMT_S16;
     //check that the encoder supports s16 pcm input
-    if (!ValidUtil::checkSampleFormat(codec, codecCtx->sample_fmt)) {
+    if (!FFmpegUtil::checkSampleFormat(codec, codecCtx->sample_fmt)) {
         cerr << "Encoder does not support sample format " << av_get_sample_fmt_name(codecCtx->sample_fmt) << endl;
         exit(1);
     }

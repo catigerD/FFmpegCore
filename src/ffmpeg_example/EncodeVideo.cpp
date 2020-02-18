@@ -10,7 +10,7 @@ extern "C" {
 #include "libavutil/opt.h"
 }
 
-#include "CodecUtil.h"
+#include "FFmpegUtil.h"
 
 using namespace std;
 
@@ -93,9 +93,9 @@ void EncodeVideo::operator()() {
             inputStream.read(reinterpret_cast<char *>(frame->data[2] + j * frame->linesize[2]), codecCtx->width / 2);
         }
         frame->pts = pts++;
-        CodecUtil::encode(codecCtx, frame, packet, outputStream);
+        FFmpegUtil::encode(codecCtx, frame, packet, outputStream);
     }
-    CodecUtil::encode(codecCtx, nullptr, packet, outputStream);
+    FFmpegUtil::encode(codecCtx, nullptr, packet, outputStream);
 }
 
 void EncodeVideo::release() {
