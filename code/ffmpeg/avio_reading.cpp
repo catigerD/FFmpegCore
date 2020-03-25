@@ -35,11 +35,13 @@
 #include <libavformat/avio.h>
 #include <libavutil/file.h>
 
+//note: 读取文件数据的封装结构
 struct buffer_data {
     uint8_t *ptr;
     size_t size; ///< size left in the buffer
 };
 
+//note: 将 buffer_data 中的数据读取到 buf
 static int read_packet(void *opaque, uint8_t *buf, int buf_size) {
     struct buffer_data *bd = (struct buffer_data *) opaque;
     buf_size = FFMIN(buf_size, bd->size);
@@ -56,6 +58,7 @@ static int read_packet(void *opaque, uint8_t *buf, int buf_size) {
 int main(int argc, char *argv[]) {
     AVFormatContext *fmt_ctx = NULL;
     AVIOContext *avio_ctx = NULL;
+    //buffer: 文件中读取的数据填充到 buffer_data，avio_ctx_buffer 输入到解复用器的数据
     uint8_t *buffer = NULL, *avio_ctx_buffer = NULL;
     size_t buffer_size, avio_ctx_buffer_size = 4096;
     char *input_filename = NULL;
@@ -69,6 +72,7 @@ int main(int argc, char *argv[]) {
     }
     input_filename = argv[1];
     /* slurp file content into buffer */
+    //note : av_file_map 文件太大时内存溢出？
     ret = av_file_map(input_filename, &buffer, &buffer_size, 0, NULL);
     if (ret < 0)
         goto end;
@@ -90,6 +94,7 @@ int main(int argc, char *argv[]) {
         ret = AVERROR(ENOMEM);
         goto end;
     }
+    //note: 将创建的 AVIOContext 对象赋值给 AVFormatContext
     fmt_ctx->pb = avio_ctx;
     ret = avformat_open_input(&fmt_ctx, NULL, NULL, NULL);
     if (ret < 0) {
@@ -105,6 +110,7 @@ int main(int argc, char *argv[]) {
     end:
     avformat_close_input(&fmt_ctx);
     /* note: the internal buffer could have changed, and be != avio_ctx_buffer */
+    //note: 根据avio_alloc_context判断，avio_ctx_buffer 可能不等于 avio_ctx->buffer，所以不能直接对avio_ctx_buffer调用 free
     if (avio_ctx) {
         av_freep(&avio_ctx->buffer);
         av_freep(&avio_ctx);
