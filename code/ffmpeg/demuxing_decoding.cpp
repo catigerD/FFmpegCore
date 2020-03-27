@@ -217,6 +217,7 @@ int main (int argc, char **argv)
                         "\n", argv[0]);
         exit(1);
     }
+    //设置引用计数开关后，允许将数据副本保留超过一个解码时间。
     if (argc == 5 && !strcmp(argv[1], "-refcount")) {
         refcount = 1;
         argv++;
